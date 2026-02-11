@@ -9,6 +9,10 @@ function App() {
 
   const [city, setCity]=useState('seoul')
   const [wether, setWether]=useState(null)
+
+  const [locationName, setLocationName]=useState('')
+
+
   const [loading, setLoading]=useState(false)
   const[err, setErr]=useState('')
 
@@ -34,12 +38,14 @@ function App() {
     try{
       setLoading(true)
       setErr('')
-      const {lat, lon, name, country} = await fetchCoordinates(q)
+      const {lat, lon, name, country, state} = await fetchCoordinates(q)
+      const fomattedName = state ? `${state} / ${name}` : `${name}, ${country}`;
 
-      console.log(lat, lon, name, country)
+      // console.log(lat, lon, name, country)
         const data = await fetchWeatherByCoords(lat, lon,)
-      console.log(data)
+      // console.log(data)
       setWether(data)
+      setLocationName(fomattedName)
       setCity('')
 
 
@@ -78,7 +84,7 @@ function App() {
           </div>
           {err && <p>{err}</p>}
           {loading && <p>불러오는 중 ...</p>}
-        <WetherCard wether={wether}/>
+        <WetherCard wether={wether} locationName={locationName}/>
       </div>
     </div>
   )

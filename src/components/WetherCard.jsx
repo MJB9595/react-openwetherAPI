@@ -1,14 +1,15 @@
 import React, {useMemo} from 'react'
 import './WetherCard.css'
 
-const WetherCard = ({wether}) => {
+const WetherCard = ({wether, locationName}) => {
     if(!wether) return null
 
-    const {name, main, wether:wetherInfo}=wether
+    const {weather}=wether
+    const {main} = wether
 
     const {temp, humidity}=main || {}
 
-    const {description, icon}=(wetherInfo && wetherInfo[0]) || {}
+    const {description, icon}=(weather && weather[0]) || {}
 
     console.log(name, temp, humidity, description, icon)
 
@@ -17,7 +18,7 @@ const WetherCard = ({wether}) => {
     ),[icon])
     return (
         <div className='card'> 
-        <h2>{name}</h2>
+        <h2>{locationName}</h2>
         <div className='img-wrap'>
             {iconUrl&&
             <img src={iconUrl} alt={description}/>
