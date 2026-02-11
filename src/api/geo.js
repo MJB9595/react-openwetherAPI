@@ -16,8 +16,8 @@ export const fetchCoordinates =async(city)=> {
         throw new Error('도시를 찾을 수 없습니다')
     }
 
-    const {lat, lon, name, country}=res.data[0]
-
-    return {lat, lon, name, country}
+    const {lat, lon, name, country, state} = res.data[0]
+    
+    return {lat, lon, name, country, state}
 
 }
