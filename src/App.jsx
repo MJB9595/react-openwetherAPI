@@ -3,7 +3,8 @@ import React,{useState, useRef, useEffect, useMemo} from 'react'
 import './App.css'
 import { fetchCoordinates } from './api/geo'
 import { fetchWeatherByCoords } from './api/wether'
-import { getColorByWeatherId } from './data/bgColor'
+// import { getColorByWeatherId } from './data/bgColor'
+import { getBackgroundWeather } from './data/bgColor'
 
 function App() {
 
@@ -65,27 +66,38 @@ function App() {
 
   const weatherId = wether ? wether.weather[0].id : 800;
 
-  const bgStyle = getColorByWeatherId(weatherId);
+  // const bgStyle = getColorByWeatherId(weatherId);
+  const { imageUrl, fallbackColor } = getBackgroundWeather(weatherId);
+
+  const bgStyle = {
+      backgroundImage: `url(${imageUrl})`,
+      backgroundColor: fallbackColor,
+  };
 
   return (
-    <div className='app' style={{ background: bgStyle, transition: 'background 0.5s ease' }}>
-      <div className="container">
-        <h1>김재아의 날씨앱</h1>
-          <div className="input-wrap">
-            <input 
-            value={city}
-            onChange={onChangeInput}
-            onKeyUp={onKeyup}
-            type="text" 
-            placeholder='날씨를 알고싶은 지역을 입력하세요'
-            ref={inputRef}/>
-            <button
-            onClick={handleSearch}>검색</button>
-          </div>
-          {err && <p>{err}</p>}
-          {loading && <p>불러오는 중 ...</p>}
-        <WetherCard wether={wether} locationName={locationName}/>
-      </div>
+    <div className='app' 
+    // style={{ background: bgStyle, transition: 'background 0.5s ease' }}
+    style={{ position: 'relative', overflow: 'hidden' }}
+    >
+
+      <div className="weather-background" style={bgStyle}></div>
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <h1>김재아의 날씨앱</h1>
+            <div className="input-wrap">
+              <input 
+              value={city}
+              onChange={onChangeInput}
+              onKeyUp={onKeyup}
+              type="text" 
+              placeholder='날씨를 알고싶은 지역을 입력하세요'
+              ref={inputRef}/>
+              <button
+              onClick={handleSearch}>검색</button>
+            </div>
+            {err && <p>{err}</p>}
+            {loading && <p>불러오는 중 ...</p>}
+          <WetherCard wether={wether} locationName={locationName}/>
+        </div>
     </div>
   )
 }
