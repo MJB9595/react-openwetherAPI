@@ -1,0 +1,19 @@
+import axios from "axios";
+
+const API_KEY=import.meta.env.VITE_OPENWETHER_API_KEY
+
+export const fetchWeatherByCoords =async(lat, lon, name, country)=>{
+
+    const res = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
+        params:{
+            lat,
+            lon,
+            units:'metric',
+            lang:'kr',
+            appid:API_KEY
+        }
+    })
+
+    return res.data
+
+} 
